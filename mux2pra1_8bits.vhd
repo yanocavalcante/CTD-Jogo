@@ -1,8 +1,9 @@
 library IEEE;
 use IEEE.Std_Logic_1164.all;
 
+
 entity mux2pra1_8bits is
-port (
+port(
 	W: in std_logic_vector(7 downto 0);
 	X: in std_logic_vector(7 downto 0);
 	sel: in std_logic;
