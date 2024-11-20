@@ -156,6 +156,16 @@ end component;
 --                      SIGNALS                               --
 --============================================================--
 
+-- MEUS SINAIS
+signal SwSelecao <= SW(7 downto 0);
+signal BitsSelecao: std_logic_vector(7 downto 0);
+signal SwInputUser <= SW(9 downto 0);
+signal BitsInput: std_logic_vector(9 downto 0);
+signal ResultComparada: std_logic_vector(9 downto 0);
+signal BitsSomadosVerifica, BitsSomadosResultado: std_logic_vector(3 downto 0);
+
+
+-- SINAIS PRÉ-PRONTOS
 signal selMux23, selMux45, end_game_interno, end_round_interno, clk_1, enableRegFinal: std_logic; --1 bit
 signal Round, Level_time, Level_code, SaidaCountT, SomaDigitada, SomaSelDig, CounterTMux: std_logic_vector(3 downto 0); -- 4 bits
 signal decMuxCode, decMuxRound, muxMux2, muxMux3, decMux4, Tempo, t, r, n: std_logic_vector(6 downto 0); -- 7 bits
@@ -174,7 +184,30 @@ DIV: Div_Freq port map (CLOCK_50, R2, clk_1); -- Para teste no emulador, comenta
 
 -------------------ELEMENTOS DE MEMORIA-------------------------
 
--- a fazer pel@ alun@
+-- Registrador que pega as características da partida selecionadas pelo jogador (Código da ROM e dificuldade)
+REG_8_BITS: reg8bits port map (
+    SwSelecao,
+    E1,
+    CLK,
+    R2,
+    BitsSelecao
+);
+
+-- Registrador que pega o input do usuário a cada rodada
+REG_10_BITS: reg10bits port map (
+    SwInputUser,
+    E2,
+    CLK,
+    R2,
+    BitsInput
+);
+
+-- Acessa a ROM e devolve o código selecionado
+MY_ROM: rom port map (
+    BitsSelecao(3 downto 0);
+    Code
+);
+
 
 ---------------------MULTIPLEXADORES----------------------------
 
@@ -182,7 +215,36 @@ DIV: Div_Freq port map (CLOCK_50, R2, clk_1); -- Para teste no emulador, comenta
 
 -------------------COMPARADORES E SOMA--------------------------
 
--- a fazer pel@ alun@
+-- Comparador entre o input do usuário e o código da ROM selecionado
+MY_COMP: comp port map (
+    BitsInput,
+    Code,
+    ResultComparada
+);
+
+-- Soma que verifica se o jogador colocou 4 '1s' lógicos
+SOMA_VERIFICA: soma port map (
+    BitsInput,
+    BitsSomadosVerifica
+);
+
+-- Comparador que verifica se o jogador colocou 4 '1s' lógicos
+COMPARA_VERIFICA: comp_igual4 port map (
+    BitSomadosVerifica,
+    sw_erro
+);
+
+-- Soma que verifica se o jogador acertou o código
+SOMA_RESULTADO: soma port map (
+    ResultComparada,
+    BitsSomadosResultado
+);
+
+-- Comparador que verifica se o jogador acertou o código
+COMPARA_RESULTADO: comp_igual4 port map (
+    BitsSomadosResultado,
+    end_game
+);
         
 ---------------------DECODIFICADORES----------------------------
 
