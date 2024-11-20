@@ -1,0 +1,24 @@
+Arquivos Dados:
+
+ButtonSync.vhd
+controle.vhd
+datapath.vhd
+Div_Freq.vhd
+ROM.vhd
+usertop.vhd
+
+Arquivos Necessários:
+
+()counter_time.vhd
+()counter0to10.vhd
+(x)reg4bits.vhd
+(x)reg8bits.vhd
+(x)reg10bits.vhd
+(x)mux2:1_4bits.vhd
+()mux2:1_7bits.vhd
+()mux2:1_8bits.vhd
+()mux2:1_10bits.vhd
+(x)decod7seg.vhd
+()comp.vhd
+()comp_igual4.vhd
+()soma.vhd

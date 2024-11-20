@@ -1,0 +1,21 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity Topo is
+port ( LEDR: out std_logic_vector(3 downto 0);
+	CLOCK_50: in std_logic;
+	KEY: in std_logic_vector(1 downto 0);
+);
+end Topo;
+architecture topo_beh of Topo is
+component FSM_Conta
+	port (
+		contagem: out std_logic_vector(3 downto 0);
+		clock: in std_logic;
+		reset: in std_logic
+);
+begin
+L0: FSM_Conta port map ( F, CLOCK_50, KEY(0) );
+-- O aluno deve incluir o display
+LEDR <= F;
+end topo_beh;
