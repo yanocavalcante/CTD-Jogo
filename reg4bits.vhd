@@ -3,11 +3,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity registrador is port (
-D: in std_logic_vector(3 downto 0);
-EN: in std_logic;
-CLK: in std_logic;
-RST: in std_logic;
-Q: out std_logic_vector(3 downto 0)
+	D: in std_logic_vector(3 downto 0);
+	EN: in std_logic;
+	CLK: in std_logic;
+	RST: in std_logic;
+	Q: out std_logic_vector(3 downto 0)
 );
 end registrador;
 

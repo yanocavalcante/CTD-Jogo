@@ -41,7 +41,7 @@ end component;
 
 component counter_time is
 port(
-    Enable, Reset, CLOCK: in std_logic;
+    Enable, reset, clock: in std_logic;
     load: in std_logic_vector(3 downto 0);
     end_time: out std_logic;
     tempo: out std_logic_vector(3 downto 0)
@@ -102,9 +102,10 @@ port(
 end component;
 
 component mux2pra1_7bits is
-port (sel: in std_logic;
-		x, y: in std_logic_vector(6 downto 0);
-		saida: out std_logic_vector(6 downto 0)
+port (
+    sel: in std_logic;
+	x, y: in std_logic_vector(6 downto 0);
+	saida: out std_logic_vector(6 downto 0)
 );
 end component;
 
