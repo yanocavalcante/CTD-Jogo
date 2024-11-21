@@ -129,8 +129,8 @@ end component;
 
 component decod7seg is
 port(
-    X: in std_logic_vector(3 downto 0);
-    Y: out std_logic_vector(6 downto 0)
+    C: in std_logic_vector(3 downto 0);
+    HEX: out std_logic_vector(6 downto 0)
 );
 end component;
 
@@ -138,9 +138,9 @@ end component;
 
 component comp is
 port (
-    seq_user: in std_logic_vector(9 downto 0);
-    seq_reg: in std_logic_vector(9 downto 0);
-    seq_mask: out std_logic_vector(9 downto 0)
+    rom_code: in std_logic_vector(9 downto 0);
+    user_code: in std_logic_vector(9 downto 0);
+    output_bits: out std_logic_vector(9 downto 0)
 );
 end component;
 
