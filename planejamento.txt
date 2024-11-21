@@ -9,8 +9,8 @@ usertop.vhd
 
 Arquivos Necessários:
 
-()counter_time.vhd
-()counter0to10.vhd
+(x)counter_time.vhd
+(x)counter0to10.vhd
 (x)reg4bits.vhd
 (x)reg8bits.vhd
 (x)reg10bits.vhd
@@ -21,4 +21,4 @@ Arquivos Necessários:
 (x)decod7seg.vhd
 (x)comp.vhd
 (x)comp_igual4.vhd
-()soma.vhd
+(x)soma.vhd
