@@ -174,14 +174,14 @@ signal Round, BitsSomadosVerifica, BitsSomadosResultado, saida_mux_four, Tempo: 
 signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg, end_game_interno, end_round_interno, end_time_interno, sw_erro_interno: std_logic;
 
 -- SINAIS PRÉ-PRONTOS
-signal selMux23, selMux45, clk_1, enableRegFinal: std_logic; --1 bit
+signal selMux23, selMux45, enableRegFinal: std_logic; --1 bit
 signal SomaSelDig_estendido,SeqLevel, RegFinal, valorfin_vector, MuxSelDig: std_logic_vector(7 downto 0); -- 8 bits
 signal N_unsigned: unsigned(3 downto 0);
 
 begin
 
 
-DIV: Div_Freq port map (CLOCK_50, R2, clk_1); -- Para teste no emulador, comentar essa linha e usar o CLK_1Hz
+--DIV: Div_Freq port map (CLOCK_50, R2, clk_1); -- Para teste no emulador, comentar essa linha e usar o CLK_1Hz
 
 ------------------------CONTADORES------------------------------
 
