@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
 
 entity counter_time is port(
         Enable, reset, clock: in std_logic;
@@ -10,23 +12,23 @@ entity counter_time is port(
 );
 end counter_time;
 
-architecture bhv of counter_time is
-        type STATES is (E0, E1, E2, E3, E4);
-        signal EA, PE: STATES;
-begin
-P1: process(clock, reset)
-begin
-        if reset= '0' then
-                EA <= E0;
-        elsif clock'event and clock= '0' and Enable = '1' then
-                EA <= PE;
-        end if;
-end process;
+architecture arqdtp of counter_time is
+signal tot: std_logic_vector(3 downto 0);
 
-P2: process(EA)
 begin
-    case EA is
-        when E0 =>
-        end case;
+-- Registrador e Somador:
+process(clock, reset, Enable)
+begin
+	if (reset = '1') then
+	tot <= "0000";
+	elsif (clock'event AND clock = '1') then
+			if (Enable = '1') then
+				tot <= tot + 1;
+			end if;
+	end if;
 end process;
-end bhv;
+tempo <= tot;
+-- Comparador:
+end_time <= '1' when (tot > load) else
+'0';
+end arqdtp;

@@ -1,20 +1,18 @@
-library iee;
+library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 entity comp is
-    Port (
-        rom_code : in STD_LOGIC_VECTOR(9 downto 0); 
-        user_code : in STD_LOGIC_VECTOR(9 downto 0); 
-        output_bits : out STD_LOGIC_VECTOR(9 downto 0) 
+    port (
+        rom_code : in STD_LOGIC_VECTOR(9 downto 0);  -- Vetor de 10 bits de entrada (rom_code)
+        user_code : in STD_LOGIC_VECTOR(9 downto 0); -- Vetor de 10 bits de entrada (user_code)
+        output_bits : out STD_LOGIC_VECTOR(9 downto 0)  -- Vetor de 10 bits de saída
     );
 end comp;
 
 architecture comparator of comp is
 begin
-    begin
-        for i in 0 to 9 loop
-            output_bits(i) <= rom_code(i) and user_code(i) 
-        end loop;
+    -- Comparação bit a bit entre rom_code e user_code
+    output_bits <= (rom_code and user_code); -- Realiza a operação AND bit a bit
+
 end comparator;

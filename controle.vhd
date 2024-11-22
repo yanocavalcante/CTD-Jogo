@@ -17,8 +17,110 @@ architecture arc of controle is
 	signal EA, PE: State := Start; 						-- PE: proximo estado, EA: estado atual 
 
 begin
+P1: process(clock_50, BTN0)
+begin
+	if BTN0= '0' then
+		EA <= Start;
+	elsif clock_50'event and clock_50= '0' then
+		EA <= PE;
+	end if;
+end process;
 
+P2: process(BTN1, EA, sw_erro, end_game, end_time, end_round)
+begin
+	case EA is
+		when Start =>
+			 R1 <= '1';
+			 R2 <= '1';
+			 E1 <= '0';
+			 E2 <= '0';
+			 E3 <= '0';
+			 E4 <= '0';
+			 E5 <= '0';
+			 if not(BTN1) then
+				PE <= Setup;
+			 else
+				PE <= Start;
+			 end if;
+		 
+		when Setup =>
+			 R1 <= '0';
+			 R2 <= '0';
+			 E1 <= '1';
+			 E2 <= '0';
+			 E3 <= '0';
+			 E4 <= '0';
+			 E5 <= '0';
+			 if BTN1 then
+				PE <= Setup;
+			 else
+			   PE <= Play;
+			 end if;
+		
+		when Play =>
+			 R1 <= '0';
+			 R2 <= '0';
+			 E1 <= '0';
+			 E2 <= '1';
+			 E3 <= '0';
+			 E4 <= '0';
+			 E5 <= '0';
+			 if not(end_time) and BTN1 then
+				PE <= Play;
+			 elsif not(end_time) and not(BTN1) then
+				PE <= Count_Round;
+			 else
+				PE <= Result;
+			 end if;
 
--- FSM usando dois process a ser feito pel@ alun@
+		when Count_Round =>
+			 R1 <= '0';
+			 R2 <= '0';
+			 E1 <= '0';
+			 E2 <= '0';
+			 E3 <= '1';
+			 E4 <= '0';
+			 E5 <= '0';
+			 PE <= Check;
 
-end architecture;
+		when Check =>
+			 R1 <= '0';
+			 R2 <= '0';
+			 E1 <= '0';
+			 E2 <= '1';
+			 E3 <= '0';
+			 E4 <= '0';
+			 E5 <= '0';
+			 if not(sw_erro or end_round or end_game) then
+				PE <= Waits;
+			 else
+				PE <= Result;
+			 end if;
+
+		when Waits =>
+			 R1 <= '1';
+			 R2 <= '0';
+			 E1 <= '0';
+			 E2 <= '0';
+			 E3 <= '0';
+			 E4 <= '1';
+			 E5 <= '0';
+		
+			 if not(BTN1) then
+				PE <= Play;
+			 end if;
+
+		when Result =>
+			 R1 <= '0';
+			 R2 <= '0';
+			 E1 <= '0';
+			 E2 <= '0';
+			 E3 <= '0';
+			 E4 <= '0';
+			 E5 <= '1';
+			 if not(BTN1) then
+				PE <= Start;
+			 end if;
+		end case;		
+end process;
+end arc;

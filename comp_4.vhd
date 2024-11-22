@@ -1,5 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use ieee.numeric_std.all;
+
 
 ENTITY comp_4 IS
     PORT (
@@ -10,5 +12,5 @@ END comp_4;
 
 ARCHITECTURE comparator OF comp_4 IS
 BEGIN
-    status <= '1' when soma = '0100' else '0';
+    status <= '1' when soma = "0100" else '0';
 END comparator;

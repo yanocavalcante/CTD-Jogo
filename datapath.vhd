@@ -144,7 +144,7 @@ port (
 );
 end component;
 
-component comp_igual4 is
+component comp_4 is
 port(
     soma: in std_logic_vector(3 downto 0);
     status: out std_logic
@@ -166,19 +166,17 @@ end component;
 signal SwInputUser, BitsInput, Code, ResultComparada, EntradaLEDS: std_logic_vector(9 downto 0);
 signal BitsSelecao, SwSelecao, saida_aux_reg: std_logic_vector(7 downto 0);
 signal saida_mux_eight: std_logic_vector(7 downto 0);
-signal entrada1_mux_eight, entrada2_mux_eight: std_logic_vector(7 downto 0)
-signal Tempo, t, r, n, allOnes: std_logic_vector(6 downto 0);
+signal entrada1_mux_eight, entrada2_mux_eight: std_logic_vector(7 downto 0);
+signal t, r, n, allOnes: std_logic_vector(6 downto 0);
 signal saida_decoder_hex_4, saida_decoder_2_hex_2, saida_decoder_1_hex_2: std_logic_vector(6 downto 0);
 signal saida_mux_seven_0, saida_mux_seven_1, saida_mux_seven_2, saida_mux_seven_3, saida_mux_seven_4, saida_mux_seven_5: std_logic_vector(6 downto 0);
-signal Round, BitsSomadosVerifica, BitsSomadosResultado, saida_mux_four: std_logic_vector(3 downto 0);
-signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg: std_logic;
+signal Round, BitsSomadosVerifica, BitsSomadosResultado, saida_mux_four, Tempo: std_logic_vector(3 downto 0);
+signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg, end_game_interno, end_round_interno, end_time_interno, sw_erro_interno: std_logic;
 
 -- SINAIS PRÉ-PRONTOS
-signal selMux23, selMux45, end_game_interno, end_round_interno, clk_1, enableRegFinal: std_logic; --1 bit
-signal Round, Level_time, Level_code, SaidaCountT, SomaDigitada, SomaSelDig, CounterTMux: std_logic_vector(3 downto 0); -- 4 bits
+signal selMux23, selMux45, clk_1, enableRegFinal: std_logic; --1 bit
 signal SomaSelDig_estendido,SeqLevel, RegFinal, valorfin_vector, MuxSelDig: std_logic_vector(7 downto 0); -- 8 bits
 signal N_unsigned: unsigned(3 downto 0);
-signal SeqDigitada, ComparaSelDig, SelecionadaROM, EntradaLEDS: std_logic_vector(9 downto 0); -- 10 bits
 
 begin
 
@@ -187,104 +185,110 @@ DIV: Div_Freq port map (CLOCK_50, R2, clk_1); -- Para teste no emulador, comenta
 
 ------------------------CONTADORES------------------------------
 
--- a fazer pel@ alun@
+CONTADOR_TEMPO: counter_time port map (
+	E2, R1, CLK_1Hz,
+	BitsSelecao(7 downto 4),
+	end_time_interno,
+	Tempo
+);
+
+CONTADOR_RODADA: counter0to10 port map (
+	E3, R2, CLK_1Hz,
+	Round,
+	end_round_interno
+);
 
 -------------------ELEMENTOS DE MEMORIA-------------------------
 
 -- Registrador que pega as características da partida selecionadas pelo jogador (Código da ROM e dificuldade)
 REG_SEL_8_BITS: reg8bits port map (
-    SwSelecao,
-    E1,
-    CLK,
-    R2,
+    CLK_1Hz, R2, E1,
+	 SwSelecao,
     BitsSelecao
 );
 
 -- Registrador que pega o input do usuário a cada rodada
 REG_10_BITS: reg10bits port map (
+	 CLK_1Hz, R2, E2,
     SwInputUser,
-    E2,
-    CLK,
-    R2,
     BitsInput
 );
 
 REG_AUX_8_BITS: reg8bits port map (
+	 CLK_1Hz, R2, enable_aux_reg,
     saida_mux_eight,
-    enable_aux_reg,
-    CLK,
-    R2,
-    saida_aux_reg,
+    saida_aux_reg
 );
 
 -- Acessa a ROM e devolve o código selecionado
 MY_ROM: rom port map (
-    BitsSelecao(3 downto 0);
+    BitsSelecao(3 downto 0),
     Code
 );
 
 ---------------------MULTIPLEXADORES----------------------------
 
 MUX_EIGHT: mux2pra1_8bits port map (
+	 E5,
     entrada1_mux_eight,
     entrada2_mux_eight,
-    E5,
     saida_mux_eight
 );
 
 MUX_TEN: mux2pra1_10bits port map (
+	 E5,
     "0000000000",
     Code,
     EntradaLEDS
 );
 
 MUX_FOUR: mux2pra1_4bits port map (
-    Tempo,
-    BitsSelecao(7 downto 0),
     E2,
+    Tempo,
+    BitsSelecao(7 downto 4),
     saida_mux_four
 );
 
 --Multiplexadores de 7 bits
 MUX_SEVEN_5: mux2pra1_7bits port map (
+	 enable_mux_seven_4_and_5,
     t,
     allOnes,
-    enable_mux_seven_4_and_5,
     saida_mux_seven_5
 );
 
 MUX_SEVEN_4: mux2pra1_7bits port map (
+    enable_mux_seven_4_and_5,
     saida_decoder_hex_4,
     allOnes,
-    enable_mux_seven_4_and_5,
     saida_mux_seven_4
 );
 
 MUX_SEVEN_3: mux2pra1_7bits port map (
+    enable_mux_seven_1_and_3,
     r,
     saida_mux_seven_2,
-    enable_mux_seven_1_and_3,
     saida_mux_seven_3
 );
 
 MUX_SEVEN_2: mux2pra1_7bits port map (
+    E1,
     n,
     allOnes,
-    E1,
     saida_mux_seven_2
 );
 
 MUX_SEVEN_1: mux2pra1_7bits port map (
+    enable_mux_seven_1_and_3,
     saida_decoder_2_hex_2,
     saida_mux_seven_0,
-    enable_mux_seven_1_and_3,
     saida_mux_seven_1
 );
 
 MUX_SEVEN_0: mux2pra1_7bits port map (
+    E1,
     saida_decoder_1_hex_2,
     allOnes,
-    E1,
     saida_mux_seven_0
 );
 -------------------COMPARADORES E SOMA--------------------------
@@ -303,9 +307,9 @@ SOMA_VERIFICA: soma port map (
 );
 
 -- Comparador que verifica se o jogador colocou 4 '1s' lógicos
-COMPARA_VERIFICA: comp_igual4 port map (
+COMPARA_VERIFICA: comp_4 port map (
     BitsSomadosVerifica,
-    sw_erro
+    sw_erro_interno
 );
 
 -- Soma que verifica se o jogador acertou o código
@@ -315,16 +319,17 @@ SOMA_RESULTADO: soma port map (
 );
 
 -- Comparador que verifica se o jogador acertou o código
-COMPARA_RESULTADO: comp_igual4 port map (
+COMPARA_RESULTADO: comp_4 port map (
     BitsSomadosResultado,
-    end_game
+    end_game_interno
 );
         
 ---------------------DECODIFICADORES----------------------------
 DECODER_HEX_4: decod7seg port map (
     saida_mux_four,
     saida_decoder_hex_4
-)
+);
+
 DECODER_2_HEX_2: decod7seg port map (
     BitsSelecao(3 downto 0),
     saida_decoder_2_hex_2
@@ -336,7 +341,7 @@ DECODER_1_HEX_2: decod7seg port map (
 );
 
 DECODER_HEX_1: decod7seg port map (
-    saida_aux_reg(t downto 4);
+    saida_aux_reg(7 downto 4),
     HEX1
 );
 
@@ -349,13 +354,13 @@ DECODER_HEX_0: decod7seg port map (
 SwSelecao <= SW(7 downto 0);
 SwInputUser <= SW(9 downto 0);
 
-allOnes <= "1111111"
+allOnes <= "1111111";
 
 entrada1_mux_eight <= "1010" & BitsSomadosResultado;
-entrada2_mux_eight <= "000" & end_game & (not Round); 
+entrada2_mux_eight <= "000" & end_game_interno & (not Round); 
 
 enable_aux_reg <= (E5 or E4);
 enable_mux_seven_1_and_3 <= (R1 xor R2);
 
-LEDR <= EntradaLEDS
+LEDR <= EntradaLEDS;
 end arc;
