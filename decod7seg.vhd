@@ -11,7 +11,7 @@ end decod7seg;
 architecture decod of decod7seg is
 begin
     -- Decodificação para os números de 0 a 9 e a letra A
-    HEX <= "0000001" when C = "0000" else -- 0
+    HEX <= "1000000" when C = "0000" else -- 0
             "1001111" when C = "0001" else -- 1
             "0010010" when C = "0010" else -- 2
             "0000110" when C = "0011" else -- 3
