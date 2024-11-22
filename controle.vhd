@@ -37,7 +37,7 @@ begin
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '0';
-			 if not(BTN1) then
+			 if BTN1 = '0' then
 				PE <= Setup;
 			 else
 				PE <= Start;
@@ -51,7 +51,7 @@ begin
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '0';
-			 if BTN1 then
+			 if BTN1 = '1' then
 				PE <= Setup;
 			 else
 			   PE <= Play;
@@ -65,9 +65,9 @@ begin
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '0';
-			 if not(end_time) and BTN1 then
+			 if end_time = '0' and BTN1 = '1' then
 				PE <= Play;
-			 elsif not(end_time) and not(BTN1) then
+			 elsif end_time = '0' and BTN1 = '0' then
 				PE <= Count_Round;
 			 else
 				PE <= Result;
@@ -91,7 +91,7 @@ begin
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '0';
-			 if not(sw_erro or end_round or end_game) then
+			 if not(sw_erro = '1' or end_round = '1' or end_game = '1') then
 				PE <= Waits;
 			 else
 				PE <= Result;
@@ -106,7 +106,7 @@ begin
 			 E4 <= '1';
 			 E5 <= '0';
 		
-			 if not(BTN1) then
+			 if BTN1 = '0' then
 				PE <= Play;
 			 end if;
 
@@ -118,7 +118,7 @@ begin
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '1';
-			 if not(BTN1) then
+			 if BTN1 = '0' then
 				PE <= Start;
 			 end if;
 		end case;		
