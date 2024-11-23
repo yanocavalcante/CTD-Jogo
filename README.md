@@ -1,5 +1,7 @@
 # EEL5105 - Circuitos e Técnicas Digitais
 
+Alunos: Marina Benvenuti Cardeal e Yano de Melo Cavalcante
+
 ### Decifrador de Código
 O projeto final da disciplina EEL5105 - Circuitos e Técnicas Digitais consiste na implementação de um circuito na placa de desenvolvimento DE2 fazendo uso das estruturas e conhecimentos obtidos durante o curso.<hr> O circuito desenvolvido visou implementar um jogo interativo para a obtenção de um código secreto de 10 bits. O comportamento do jogo a, partir de uma sequência de possíveis estaods, está definido a seguir:<br><br>
 • O usuário começa no estado <em>Init</em> e dá início ao jogo pressionando o botão de pressão 'enter' (KEY1). Uma vez no estado <em>Setup</em> o usuário deve escolher uma das 16 sequências possíveis com os Switches 3 a 0, SW (3..0), as quais estão descritas numa memória ROM. Dita memória possui 16 linhas de informação de 10-bits (24 × 10). Cada um desses 16 vetores de 10 bits contém unicamente quatro ”1s” lógicos.<br> Os Switches 7 a 4, SW (7..4) servem para escolher o tempo de jogo por rodada, o aluno pode escolher entre
