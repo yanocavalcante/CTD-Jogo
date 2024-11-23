@@ -3,7 +3,8 @@
 Alunos: Marina Benvenuti Cardeal e Yano de Melo Cavalcante
 
 ### Decifrador de Código
-O projeto final da disciplina EEL5105 - Circuitos e Técnicas Digitais consiste na implementação de um circuito na placa de desenvolvimento DE2 fazendo uso das estruturas e conhecimentos obtidos durante o curso.<hr> O circuito desenvolvido visou implementar um jogo interativo para a obtenção de um código secreto de 10 bits. O comportamento do jogo a, partir de uma sequência de possíveis estaods, está definido a seguir:<br><br>
+<div>
+O projeto final da disciplina EEL5105 - Circuitos e Técnicas Digitais consiste na implementação de um circuito em uma FPGA DE2-115, fazendo uso das estruturas e conhecimentos obtidos durante o curso.<hr> O circuito desenvolvido visou implementar um jogo interativo para a obtenção de um código secreto de 10 bits. O comportamento do jogo a, partir de uma sequência de possíveis estaods, está definido a seguir:<br><br>
 • O usuário começa no estado <em>Init</em> e dá início ao jogo pressionando o botão de pressão 'enter' (KEY1). Uma vez no estado <em>Setup</em> o usuário deve escolher uma das 16 sequências possíveis com os Switches 3 a 0, SW (3..0), as quais estão descritas numa memória ROM. Dita memória possui 16 linhas de informação de 10-bits (24 × 10). Cada um desses 16 vetores de 10 bits contém unicamente quatro ”1s” lógicos.<br> Os Switches 7 a 4, SW (7..4) servem para escolher o tempo de jogo por rodada, o aluno pode escolher entre
 5 segundos, mínimo e 10 segundos, máximo. Neste estado, os displays HEX5 e HEX3 mostrarão a letra 't' de tempo
 e 'n' de nível e os displays HEX4 e HEX2 mostrarão o valor do tempo e a linha da memória escolhida.<br><img src="images/image1.png" ><br>
@@ -29,6 +30,13 @@ Nesse estado será zerada a contagem de tempo. Os displays HEX1 e HEX0 mostrarã
 em formato vetor no Datapath). O usuário deverá pressionar 'enter' para passar ao estado <em>Init</em> e iniciar outra partida.<br>
 <img src="images/image3.png"><br><p style="text-align:center"><em>Após acertar os 4 Switches, o jogo apresenta nos mostradores a soma de pontos em Hexadecimal, nesse caso, 28 pontos ou "1C". Os LEDs vermelhos mostram a sequência correta da memória.</em></p>
 • Um usuário pode em, qualquer momento, parar o jogo usando o botão de pressão 'reset' (KEY0) zerando o sistema, retornando para o estado <em>Init</em> de novo e, essencialmente reiniciando a partida.<br>
-<hr>
-O diagrama de blocos do circuito utilizado para a montagem do jogo:
+<hr></div>
+
+### Apêndice
+
+<div>
+<li>O diagrama de blocos do circuito utilizado para a montagem do jogo:</li>
 <img src="images/circuito_diagrama_blocos.png"><br><p style="text-align:center"><em>Diagrama de Blocos.</em></p>
+<hr>
+<li>Guia Introdutório de uso da placa de desenvolvimento FPGA DE2-115, produzido pelo Departamento de Eletrônica e Computação da Universidade Federal do Amazonas: <a href="https://labsdtec.ufam.edu.br/frontend/web/manuais/Super%20Roteiros%20-%20FPGA%20DE2-115.pdf">https://labsdtec.ufam.edu.br/frontend/web/manuais/Super%20Roteiros%20-%20FPGA%20DE2-115.pdf</a>.</li></div>
+<li>As imagens de teste do programa foram retiradas do Software de Emulação de placas FPGA genéricas, o FPGAemu, desenvolvido na Universidade Federal de Santa Catarina pelo professor Fabian L. Cabrera. O repositório do Software está disponível em <a href="https://github.com/fabian-l-c/fpgaemu">https://github.com/fabian-l-c/fpgaemu</a>. A versão online do emulador, disponível para alunos da UFSC, está disponível em <a href="https://fpgaemu.sites.ufsc.br">https://fpgaemu.sites.ufsc.br</a>.</li>
