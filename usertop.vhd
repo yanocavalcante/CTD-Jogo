@@ -5,8 +5,8 @@ use IEEE.Std_Logic_1164.all;
 
 entity usertop is
 port (
-	CLOCK_50:in std_logic; -- para uso na placa
-	--CLK_500Hz:in std_logic; -- para uso no emulador
+	-- CLOCK_50:in std_logic; -- para uso na placa
+	CLK_500Hz:in std_logic; -- para uso no emulador
 	CLK_1Hz:in std_logic; -- para uso no emulador
 	KEY:in std_logic_vector(3 downto 0);
 	SW:in std_logic_vector(17 downto 0);
@@ -51,7 +51,8 @@ begin
 
 PM_datapath: datapath port map(
 	SW => SW(9 downto 0),
-	CLOCK_50 => CLOCK_50, -- CLOCK_50 na placa e CLK_500Hz no emulador
+	-- CLOCK_50 => CLOCK_50, -- CLOCK_50 na placa
+	CLOCK_50 => CLK_500Hz, -- CLK_500Hz no emulador
 	CLK_1Hz => CLK_1Hz,  -- deixar assim para possível uso no emulador
 	R1 => R1,
 	R2 => R2,
@@ -76,7 +77,8 @@ PM_datapath: datapath port map(
 PM_controle: controle port map(
 	BTN1 => btn1,
 	BTN0 => btn0,
-	clock_50 => CLOCK_50, -- CLOCK_50 na placa e CLK_500Hz no emulador
+	-- clock_50 => CLOCK_50, -- CLOCK_50 na placa 
+	clock_50 => CLK_500Hz, -- CLK_500Hz no emulador
 	sw_erro => sw_erro,
 	end_game => end_game,
 	end_time => end_time,
@@ -93,7 +95,8 @@ PM_controle: controle port map(
 PM_ButtonSync: ButtonSync port map(
 	KEY0 => KEY(0), 
 	KEY1 => KEY(1), 
-	CLK => CLOCK_50, -- CLOCK_50 na placa e CLK_500Hz no emulador
+	-- CLK => CLOCK_50, -- CLOCK_50 na placa
+	CLK => CLK_500Hz, -- CLK_500Hz no emulador
 	BTN0 => btn0,
 	BTN1 => btn1
 );
