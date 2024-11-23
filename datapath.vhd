@@ -203,13 +203,13 @@ CONTADOR_RODADA: counter0to10 port map (
 -- Registrador que pega as características da partida selecionadas pelo jogador (Código da ROM e dificuldade)
 REG_SEL_8_BITS: reg8bits port map (
     CLK_1Hz, R2, E1,
-	 SwSelecao,
+	SwSelecao,
     BitsSelecao
 );
 
 -- Registrador que pega o input do usuário a cada rodada
 REG_10_BITS: reg10bits port map (
-	 CLK_1Hz, R2, E2,
+	CLK_1Hz, R2, E2,
     SwInputUser,
     BitsInput
 );
@@ -229,14 +229,14 @@ MY_ROM: rom port map (
 ---------------------MULTIPLEXADORES----------------------------
 
 MUX_EIGHT: mux2pra1_8bits port map (
-	 E5,
+	E5,
     entrada1_mux_eight,
     entrada2_mux_eight,
     saida_mux_eight
 );
 
 MUX_TEN: mux2pra1_10bits port map (
-	 E5,
+	E5,
     "0000000000",
     Code,
     EntradaLEDS
@@ -251,7 +251,7 @@ MUX_FOUR: mux2pra1_4bits port map (
 
 --Multiplexadores de 7 bits
 MUX_SEVEN_5: mux2pra1_7bits port map (
-	 enable_mux_seven_4_and_5,
+	enable_mux_seven_4_and_5,
     t,
     allOnes,
     saida_mux_seven_5
@@ -355,6 +355,9 @@ SwSelecao <= SW(7 downto 0);
 SwInputUser <= SW(9 downto 0);
 
 allOnes <= "1111111";
+t <= "0000111";
+r <= "0101111";
+n <= "0101011";
 
 entrada1_mux_eight <= "1010" & BitsSomadosResultado;
 entrada2_mux_eight <= "000" & end_game_interno & (not Round); 
