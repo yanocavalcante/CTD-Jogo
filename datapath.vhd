@@ -168,10 +168,10 @@ signal BitsSelecao, SwSelecao, saida_aux_reg: std_logic_vector(7 downto 0);
 signal saida_mux_eight: std_logic_vector(7 downto 0);
 signal entrada1_mux_eight, entrada2_mux_eight: std_logic_vector(7 downto 0);
 signal t, r, n, allOnes: std_logic_vector(6 downto 0);
-signal saida_decoder_hex_4, saida_decoder_2_hex_2, saida_decoder_1_hex_2: std_logic_vector(6 downto 0);
+signal saida_decoder_hex_4, saida_decoder_2_hex_2, saida_decoder_1_hex_2, saida_decoder_hex_1, saida_decoder_hex_0: std_logic_vector(6 downto 0);
 signal saida_mux_seven_0, saida_mux_seven_1, saida_mux_seven_2, saida_mux_seven_3, saida_mux_seven_4, saida_mux_seven_5: std_logic_vector(6 downto 0);
 signal Round, BitsSomadosVerifica, BitsSomadosResultado, saida_mux_four, Tempo: std_logic_vector(3 downto 0);
-signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg, end_game_interno, end_round_interno, end_time_interno, sw_erro_interno: std_logic;
+signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg, end_game_interno, end_round_interno, end_time_interno, sw_acerto: std_logic;
 
 -- SINAIS PRÉ-PRONTOS
 signal selMux23, selMux45, enableRegFinal: std_logic; --1 bit
@@ -193,7 +193,7 @@ CONTADOR_TEMPO: counter_time port map (
 );
 
 CONTADOR_RODADA: counter0to10 port map (
-	E3, R2, CLK_1Hz,
+	E3, R2, CLOCK_50,
 	Round,
 	end_round_interno
 );
@@ -215,7 +215,7 @@ REG_10_BITS: reg10bits port map (
 );
 
 REG_AUX_8_BITS: reg8bits port map (
-	 CLK_1Hz, R2, enable_aux_reg,
+	CLK_1Hz, R2, enable_aux_reg,
     saida_mux_eight,
     saida_aux_reg
 );
@@ -230,65 +230,56 @@ MY_ROM: rom port map (
 
 MUX_EIGHT: mux2pra1_8bits port map (
 	E5,
-    entrada1_mux_eight,
-    entrada2_mux_eight,
+    entrada1_mux_eight, entrada2_mux_eight,
     saida_mux_eight
 );
 
 MUX_TEN: mux2pra1_10bits port map (
 	E5,
-    "0000000000",
-    Code,
+    "0000000000", Code,
     EntradaLEDS
 );
 
 MUX_FOUR: mux2pra1_4bits port map (
     E2,
-    Tempo,
-    BitsSelecao(7 downto 4),
+    BitsSelecao(7 downto 4), Tempo,
     saida_mux_four
 );
 
 --Multiplexadores de 7 bits
 MUX_SEVEN_5: mux2pra1_7bits port map (
 	enable_mux_seven_4_and_5,
-    t,
-    allOnes,
+    allOnes, t,
     saida_mux_seven_5
 );
 
 MUX_SEVEN_4: mux2pra1_7bits port map (
     enable_mux_seven_4_and_5,
-    saida_decoder_hex_4,
-    allOnes,
+    allOnes, saida_decoder_hex_4,
     saida_mux_seven_4
 );
 
 MUX_SEVEN_3: mux2pra1_7bits port map (
     enable_mux_seven_1_and_3,
-    r,
-    saida_mux_seven_2,
+    saida_mux_seven_2, r,
     saida_mux_seven_3
 );
 
 MUX_SEVEN_2: mux2pra1_7bits port map (
     E1,
-    n,
-    allOnes,
+    allOnes, n,
     saida_mux_seven_2
 );
 
 MUX_SEVEN_1: mux2pra1_7bits port map (
     enable_mux_seven_1_and_3,
-    saida_decoder_2_hex_2,
-    saida_mux_seven_0,
+    saida_mux_seven_0, saida_decoder_2_hex_2,
     saida_mux_seven_1
 );
 
 MUX_SEVEN_0: mux2pra1_7bits port map (
     E1,
-    saida_decoder_1_hex_2,
-    allOnes,
+    allOnes, saida_decoder_1_hex_2,
     saida_mux_seven_0
 );
 -------------------COMPARADORES E SOMA--------------------------
@@ -306,10 +297,10 @@ SOMA_VERIFICA: soma port map (
     BitsSomadosVerifica
 );
 
--- Comparador que verifica se o jogador colocou 4 '1s' lógicos
+-- Comparador que verifica se o jogador colocou exatamente 4 '1s' lógicos
 COMPARA_VERIFICA: comp_4 port map (
     BitsSomadosVerifica,
-    sw_erro_interno
+    sw_acerto
 );
 
 -- Soma que verifica se o jogador acertou o código
@@ -331,23 +322,23 @@ DECODER_HEX_4: decod7seg port map (
 );
 
 DECODER_2_HEX_2: decod7seg port map (
-    BitsSelecao(3 downto 0),
+    Round,
     saida_decoder_2_hex_2
 );
 
 DECODER_1_HEX_2: decod7seg port map (
-    Round,
+    BitsSelecao(3 downto 0),
     saida_decoder_1_hex_2
 );
 
 DECODER_HEX_1: decod7seg port map (
     saida_aux_reg(7 downto 4),
-    HEX1
+    saida_decoder_hex_1
 );
 
 DECODER_HEX_0: decod7seg port map (
     saida_aux_reg(3 downto 0),
-    HEX0
+    saida_decoder_hex_0
 );
 
 ---------------------ATRIBUICOES DIRETAS---------------------
@@ -362,8 +353,21 @@ n <= "0101011";
 entrada1_mux_eight <= "1010" & BitsSomadosResultado;
 entrada2_mux_eight <= "000" & end_game_interno & (not Round); 
 
-enable_aux_reg <= (E5 or E4);
+enable_mux_seven_4_and_5 <= (E1 or E2);
 enable_mux_seven_1_and_3 <= (R1 xor R2);
+enable_aux_reg <= (E5 or E4);
+
+end_game <= end_game_interno;
+end_round <= end_round_interno;
+end_time <= end_time_interno; 
+sw_erro <= (not sw_acerto);
 
 LEDR <= EntradaLEDS;
+
+HEX0 <= saida_decoder_hex_0;
+HEX1 <= saida_decoder_hex_1;
+HEX2 <= saida_mux_seven_1;
+HEX3 <= saida_mux_seven_3;
+HEX4 <= saida_mux_seven_4;
+HEX5 <= saida_mux_seven_5;
 end arc;

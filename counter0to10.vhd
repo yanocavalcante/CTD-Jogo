@@ -10,14 +10,16 @@ end counter0to10;
 
 architecture bhv of counter0to10 is
         type STATES is (E0, E1, E2, E3, E4, E5, E6, E7, E8, E9);
-        signal EA, PE: STATES;
+        signal EA, PE: STATES := E0;
 begin
-P1: process(clock, reset)
+P1: process(CLOCK, Reset, Enable)
 begin
-        if reset= '0' then
+        if Reset = '1' then
                 EA <= E0;
-        elsif clock'event and clock= '0' then
-                EA <= PE;
+        elsif CLOCK'event and CLOCK = '1' then
+                if (Enable = '1') then
+                        EA <= PE;
+                end if;
         end if;
 end process;
 
