@@ -173,11 +173,6 @@ signal saida_mux_seven_0, saida_mux_seven_1, saida_mux_seven_2, saida_mux_seven_
 signal Round, BitsSomadosVerifica, BitsSomadosResultado, saida_mux_four, Tempo: std_logic_vector(3 downto 0);
 signal enable_mux_seven_1_and_3, enable_mux_seven_4_and_5, enable_aux_reg, end_game_interno, end_round_interno, end_time_interno, sw_acerto: std_logic;
 
--- SINAIS PRÉ-PRONTOS
-signal selMux23, selMux45, enableRegFinal: std_logic; --1 bit
-signal SomaSelDig_estendido,SeqLevel, RegFinal, valorfin_vector, MuxSelDig: std_logic_vector(7 downto 0); -- 8 bits
-signal N_unsigned: unsigned(3 downto 0);
-
 begin
 
 
@@ -202,20 +197,20 @@ CONTADOR_RODADA: counter0to10 port map (
 
 -- Registrador que pega as características da partida selecionadas pelo jogador (Código da ROM e dificuldade)
 REG_SEL_8_BITS: reg8bits port map (
-    CLK_1Hz, R2, E1,
+    CLOCK_50, R2, E1,
 	SwSelecao,
     BitsSelecao
 );
 
 -- Registrador que pega o input do usuário a cada rodada
 REG_10_BITS: reg10bits port map (
-	CLK_1Hz, R2, E2,
+	CLOCK_50, R2, E2,
     SwInputUser,
     BitsInput
 );
 
 REG_AUX_8_BITS: reg8bits port map (
-	CLK_1Hz, R2, enable_aux_reg,
+	CLOCK_50, R2, enable_aux_reg,
     saida_mux_eight,
     saida_aux_reg
 );
