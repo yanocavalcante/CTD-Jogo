@@ -87,7 +87,7 @@ begin
 			 R1 <= '0';
 			 R2 <= '0';
 			 E1 <= '0';
-			 E2 <= '1';
+			 E2 <= '0';
 			 E3 <= '0';
 			 E4 <= '0';
 			 E5 <= '0';
@@ -108,6 +108,8 @@ begin
 		
 			 if BTN1 = '0' then
 				PE <= Play;
+			 else
+				PE <= Waits;
 			 end if;
 
 		when Result =>
@@ -120,6 +122,8 @@ begin
 			 E5 <= '1';
 			 if BTN1 = '0' then
 				PE <= Start;
+			 else
+				PE <= Result;
 			 end if;
 		end case;		
 end process;
